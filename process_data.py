@@ -32,14 +32,19 @@ def get_duration(data_dict):
 
 
 def moving_average(data, n=3) :
-    a= []
 
-    for entry in data:
-        a.append(entry['metrics']['duration'])
 
-    ret = np.cumsum(a, dtype=float)
+    ret = np.cumsum(data, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
+
+
+def sort_done(data):
+    data_list = []
+    for entry in data:
+        data_dict[entry['done']] = entry['metrics']['duration']
+    return data_dict
+
 
 
 ### MAIN ###
@@ -111,6 +116,7 @@ if __name__ == '__main__':
     # TODO Rolling Average (days)
     # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
     ##################################################
+    #pprint(sort_done(processed_data))
     #print moving_average(processed_data)
 
     #pprint(processed_data)
