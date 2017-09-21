@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import json
+import numpy as np
 from pprint import pprint
 from sys import exit
 
@@ -30,7 +31,12 @@ def get_duration(data_dict):
         return 0
 
 
-def moving_average(a, n=3) :
+def moving_average(data, n=3) :
+    a= []
+
+    for entry in data:
+        a.append(entry['metrics']['duration'])
+
     ret = np.cumsum(a, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
@@ -87,9 +93,6 @@ if __name__ == '__main__':
         for issue in epic_dict['issues']:
             epic_dict['delivery'].append(issue['done'][0])
 
-        if len(epic_dict['delivery']) == 0:
-            print 'no issues'
-
         ##################################################
         # Get the Duration of the feature (EPIC)
         ##################################################
@@ -105,8 +108,10 @@ if __name__ == '__main__':
     print str(int(average_duration(processed_data))) + ' days/feature.'
 
     ##################################################
-    # Rolling Average (days)
+    # TODO Rolling Average (days)
+    # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
     ##################################################
+    #print moving_average(processed_data)
 
     #pprint(processed_data)
 
