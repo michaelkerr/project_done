@@ -10,14 +10,6 @@ data_file = "data.json"
 processed_file = "processed.json"
 
 
-def average_duration(data):
-    numbers = []
-    for entry in data:
-        numbers.append(entry['metrics']['duration'])
-
-    return float(sum(numbers)) / max(len(numbers), 1)
-
-
 def get_date(issue):
     #TODO
     return
@@ -25,6 +17,13 @@ def get_date(issue):
 
 def get_duration(start_date, end_date):
     return (end_date - start_date).days
+
+
+def duration_list(data):
+    numbers = []
+    for entry in data:
+        numbers.append(entry['metrics']['duration'])
+    return numbers
 
 
 def moving_average(data, n=3) :
@@ -51,9 +50,7 @@ if __name__ == '__main__':
         print e
 
     processed_data = []
-    epic_metrics = {}
 
-    #TODO FOR EACH EPIC
     for epic in epic_data:
         epic_dict = {
             'start': '',
@@ -113,18 +110,6 @@ if __name__ == '__main__':
             processed_data.append(epic_dict)
 
     ##################################################
-    # Average (days/feature)
-    ##################################################
-    epic_metrics['average'] = int(average_duration(processed_data))
-
-    ##################################################
-    # TODO Rolling Average (days)
-    # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
-    ##################################################
-    #pprint(sort_done(processed_data))
-    #print moving_average(processed_data)
-
-    ##################################################
     # "Takt" delivery time
     # TODO Move this into the first loop since its per epic????
     ##################################################
@@ -148,13 +133,50 @@ if __name__ == '__main__':
 
     processed_data = temp_list
 
+    ##################################################
+    # Epic Macro Metrics
+    ##################################################
+    epic_metrics = {}
+
+    #Average (days/feature)
+    #epic_metrics['average'] = average_duration(processed_data)
+    epic_metrics['epic_average'] = np.average(duration_list(processed_data))
+    #print str(int(epic_metrics['average'])) + ' days/feature.'
+
+    # Median
+    #epic_metrics['median'] = median_duration(processed_data)
+    epic_metrics['epic_median'] = np.median(duration_list(processed_data))
+
+    # Std Deviation
+    epic_metrics['epicstd_dev'] = np.std(duration_list(processed_data))
+
+
+    ##################################################
+    # TODO Rolling Average (days)
+    # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
+    ##################################################
+    #pprint(sort_done(processed_data))
+    #print moving_average(processed_data)
+
 
     ##################################################
     # TODO Running average of # Features in Progress
     ##################################################
 
+
+
+    # Remove the issues.....
+    temp_list = []
+    for epic in processed_data:
+        epic.pop('issues')
+        temp_list.append(epic)
+
+    processed_data = temp_list
     pprint(processed_data)
-    print str(int(epic_metrics['average'])) + ' days/feature.'
+
+    #pprint(processed_data)
+    pprint(epic_metrics)
+
 
 '''
     with open(processed_file, 'w') as outfile:
