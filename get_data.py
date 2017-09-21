@@ -5,10 +5,11 @@ import csv
 from os import path
 from pprint import pprint
 import requests
-from requests.auth import HTTPBasicAuth
+#from jira import JIRA
 
 from sys import exit
 import yaml
+from urllib import urlencode
 
 
 ### CONFIGURATION ###
@@ -31,41 +32,11 @@ data_file = "data.json"
 def search_issues(creds, url, data):
     params = {
         'jql': data,
-        'expand': 'changelog',
         'maxResults': 250
         }
 
     try:
-        req = requests.Request('GET', url, headers=headers, auth=(creds['uname'], creds['pword']), params=params)
-        prepared = req.prepare()
-
-        #'''
-        def pretty_print_POST(req):
-            """
-            At this point it is completely built and ready
-            to be fired; it is "prepared".
-
-            However pay attention at the formatting used in
-            this function because it is programmed to be pretty
-            printed and may differ from the actual request.
-            """
-            print('{}\n{}\n{}\n\n{}'.format(
-                '-----------START-----------',
-                req.method + ' ' + req.url,
-                '\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-                req.body,
-            ))
-
-        pretty_print_POST(prepared)
-
-        exit()
-        #'''
-        #url = 'https://magicleap.atlassian.net/rest/api/latest/issue/ID-1918'
-
-        response = requests.Session()
-        print response.send(prepared)
-
-        #response = requests.get(url, headers=headers, auth=(creds['uname'], creds['pword']), params=params)
+        response = requests.get(url, headers=headers, auth=(creds['uname'], creds['pword']), params=params)
         return response.json()
     except Exception as e:
         print e
@@ -103,23 +74,21 @@ if __name__ == '__main__':
     ##################################################
     # GET ALL THE COMPLETED EPICS IN THE PROJECT
     ##################################################
-    epic_search_data = 'project = ID AND issuetype = "Epic" AND status = Done AND (Labels not in ("exclude") or labels is EMPTY)'
+    #TODO DONT KNOW WHY ISSUETYPE=EPIC IS FAILING
     print "Getting Epics....."
-
-
+    epic_search_data = 'project = ID AND issuetype = Epic AND status = Done AND (Labels not in ("exclude") or labels is EMPTY)'
     epics = search_issues(credentials, search_url, epic_search_data)
     print "Done."
-    exit()
 
     # FOR EACH EPIC (FEATURE)
     for epic in epics['issues']:
         ##################################################
         # FOR EACH EPIC - GET THE START DATE(S) [LIST], END DATE(S) [LIST]
         ##################################################
-        if epic['key'] not in existing_epics:
-            print "Processing Epic: " + str(epic['key'])
 
-            #TODO hjandle updating of data
+        if (epic['key'] not in existing_epics):
+            #TODO handle updating of data
+            print "Processing Epic: " + str(epic['key'])
 
             changelog = get_changelog(credentials, api_url, epic['key'])
 
@@ -176,7 +145,7 @@ if __name__ == '__main__':
                 epic_data.append(epic_dates)
                 pprint(epic_dates)
             else:
-                print "No staert date.  Skipping"
+                print "No start date.  Skipping"
 
     pprint(epic_data)
     #TODO FEATURE START, FEATURE END, [ISSUE END DATES]

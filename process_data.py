@@ -6,6 +6,35 @@ from pprint import pprint
 from sys import exit
 
 data_file = "data.json"
+processed_file = "processed.json"
+
+
+def average_duration(data):
+    numbers = []
+    for entry in data:
+        numbers.append(entry['metrics']['duration'])
+
+    return float(sum(numbers)) / max(len(numbers), 1)
+
+
+def get_date(issue):
+    #TODO
+    return
+
+
+def get_duration(data_dict):
+    epic_duration = (data_dict['done'] - data_dict['start']).days
+    if epic_duration > 0:
+        return epic_duration
+    else:
+        return 0
+
+
+def moving_average(a, n=3) :
+    ret = np.cumsum(a, dtype=float)
+    ret[n:] = ret[n:] - ret[:-n]
+    return ret[n - 1:] / n
+
 
 ### MAIN ###
 if __name__ == '__main__':
@@ -22,36 +51,66 @@ if __name__ == '__main__':
     #TODO FOR EACH EPIC
     for epic in epic_data:
         epic_dict = {
-            'key': epic['key'],
             'start': '',
             'done': '',
-            'metics': {}
+            'issues': [],
+            'delivery': [],
+            'metrics': {}
             }
 
-        #TODO FIND EPIC START Date
-
+        #TODO move to get_date()
         epic_start = datetime.strptime(str(epic['start'][0]), "%Y-%m-%d")
 
         if len(epic['start']) > 1:
             for start_date in epic['start']:
                 start_date = datetime.strptime(str(start_date), "%Y-%m-%d")
                 if start_date < epic_start:
-                     epic_start = datetime.strptime(str(start_date), "%Y-%m-%d")
-        try:
-            epic_done = datetime.strptime(str(epic['done'][0]), "%Y-%m-%d")
-        except Exception as e:
-            print # coding=utf-8
-            pprint(epic['done'])
-            exit()
+                    epic_start = datetime.strptime(str(start_date), "%Y-%m-%d")
+
+        epic_dict['start'] = epic_start
+
+        #TODO move to get_date()
+        epic_done = datetime.strptime(str(epic['done'][0]), "%Y-%m-%d")
 
         if len(epic['done']) > 1:
             for done_date in epic['done']:
                 done_date = datetime.strptime(str(done_date), "%Y-%m-%d")
                 if done_date < epic_done:
                     epic_done = datetime.strptime(str(done_date), "%Y-%m-%d")
-        print epic_start.strftime("%Y-%m-%d") + ' to ' + epic_done.strftime("%Y-%m-%d")
 
-        #TODO FIND DONE
-        #TODO FOR EACH ISSUE
-        #TODO FOR EACH ISSUE, USE THE FIRST "DONE" DATE
-        #TODO CALCULATE BASIC METRIC (ISSUES/DAY)
+        epic_dict['done'] = epic_done
+
+        ##################################################
+        # Add the delivery dates of the issues
+        ##################################################
+        epic_dict['issues'] = epic['issues']
+        for issue in epic_dict['issues']:
+            epic_dict['delivery'].append(issue['done'][0])
+
+        if len(epic_dict['delivery']) == 0:
+            print 'no issues'
+
+        ##################################################
+        # Get the Duration of the feature (EPIC)
+        ##################################################
+        epic_dict['metrics']['duration'] = get_duration(epic_dict)
+
+        # Add the data
+        if len(epic_dict['delivery']) > 0:
+            processed_data.append(epic_dict)
+
+    ##################################################
+    # Average (days/feature)
+    ##################################################
+    print str(int(average_duration(processed_data))) + ' days/feature.'
+
+    ##################################################
+    # Rolling Average (days)
+    ##################################################
+
+    #pprint(processed_data)
+
+'''
+    with open(processed_file, 'w') as outfile:
+        json.dump(epic_dict, outfile)
+'''
