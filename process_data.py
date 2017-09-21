@@ -24,13 +24,7 @@ def get_date(issue):
 
 
 def get_duration(start_date, end_date):
-    epic_duration = (end_date - start_date).days
-    return epic_duration
-
-    if epic_duration > 0:
-        return epic_duration
-    else:
-        return 0
+    return (end_date - start_date).days
 
 
 def moving_average(data, n=3) :
@@ -57,8 +51,8 @@ if __name__ == '__main__':
         print e
 
     processed_data = []
+    epic_metrics = {}
 
-    epic_metrics = []
     #TODO FOR EACH EPIC
     for epic in epic_data:
         epic_dict = {
@@ -106,6 +100,8 @@ if __name__ == '__main__':
             if get_duration(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"), epic_dict['done']) < 0:
                 epic_dict['done'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
 
+        # Sort the delivery list in order of completion
+        epic_dict['delivery'] = sorted(epic_dict['delivery'], key=lambda x: x)
 
         ##################################################
         # Get the Duration of the feature (EPIC)
@@ -120,6 +116,7 @@ if __name__ == '__main__':
     # Average (days/feature)
     ##################################################
     print str(int(average_duration(processed_data))) + ' days/feature.'
+    epic_metrics['average'] = int(average_duration(processed_data))
 
     ##################################################
     # TODO Rolling Average (days)
@@ -129,13 +126,39 @@ if __name__ == '__main__':
     #print moving_average(processed_data)
 
     ##################################################
-    # TODO "Takt" delivery date
+    # "Takt" delivery date
     ##################################################
-    #pprint(processed_data)
+    temp_list = []
+
+    for epic in processed_data:
+        takt_list = []
+        start_date = epic['start']
+        last = 0
+
+        for done_date in sorted(epic['delivery'], key=lambda x: x):
+            duration = get_duration(start_date, done_date)
+            if duration == 0:
+                duration = last
+            start_date = done_date
+            last = duration
+            takt_list.append(duration)
+
+        epic['metrics']['takt'] = takt_list
+        temp_list.append(epic)
+
+    processed_data = temp_list
+
 
     ##################################################
     # TODO Running average of Features in Progress
     ##################################################
+
+
+
+    print str(int(epic_metrics['average'])) + ' days/feature.'
+
+    pprint(processed_data)
+
 '''
     with open(processed_file, 'w') as outfile:
         json.dump(epic_dict, outfile)
