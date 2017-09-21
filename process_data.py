@@ -23,8 +23,10 @@ def get_date(issue):
     return
 
 
-def get_duration(data_dict):
-    epic_duration = (data_dict['done'] - data_dict['start']).days
+def get_duration(start_date, end_date):
+    epic_duration = (end_date - start_date).days
+    return epic_duration
+
     if epic_duration > 0:
         return epic_duration
     else:
@@ -32,15 +34,13 @@ def get_duration(data_dict):
 
 
 def moving_average(data, n=3) :
-
-
     ret = np.cumsum(data, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
 
 
 def sort_done(data):
-    data_list = []
+    data_dict = {}
     for entry in data:
         data_dict[entry['done']] = entry['metrics']['duration']
     return data_dict
@@ -92,16 +92,25 @@ if __name__ == '__main__':
         epic_dict['done'] = epic_done
 
         ##################################################
-        # Add the delivery dates of the issues
+        # Add the delivery dates of the issues, correct Epic start/end if req'd
         ##################################################
         epic_dict['issues'] = epic['issues']
         for issue in epic_dict['issues']:
-            epic_dict['delivery'].append(issue['done'][0])
+            epic_dict['delivery'].append(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"))
+
+            # If the delivery date is before the epic start, update epic_dict['start']
+            if get_duration(epic_dict['start'], datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")) < 0:
+                epic_dict['start'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
+
+            # If the delivery date is after the epic end, update epic_dict['done']
+            if get_duration(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"), epic_dict['done']) < 0:
+                epic_dict['done'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
+
 
         ##################################################
         # Get the Duration of the feature (EPIC)
         ##################################################
-        epic_dict['metrics']['duration'] = get_duration(epic_dict)
+        epic_dict['metrics']['duration'] = get_duration(epic_dict['start'], epic_dict['done'])
 
         # Add the data
         if len(epic_dict['delivery']) > 0:
@@ -119,8 +128,14 @@ if __name__ == '__main__':
     #pprint(sort_done(processed_data))
     #print moving_average(processed_data)
 
+    ##################################################
+    # TODO "Takt" delivery date
+    ##################################################
     #pprint(processed_data)
 
+    ##################################################
+    # TODO Running average of Features in Progress
+    ##################################################
 '''
     with open(processed_file, 'w') as outfile:
         json.dump(epic_dict, outfile)
