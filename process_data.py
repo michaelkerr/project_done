@@ -115,7 +115,6 @@ if __name__ == '__main__':
     ##################################################
     # Average (days/feature)
     ##################################################
-    print str(int(average_duration(processed_data))) + ' days/feature.'
     epic_metrics['average'] = int(average_duration(processed_data))
 
     ##################################################
@@ -126,7 +125,8 @@ if __name__ == '__main__':
     #print moving_average(processed_data)
 
     ##################################################
-    # "Takt" delivery date
+    # "Takt" delivery time
+    # TODO Move this into the first loop since its per epic????
     ##################################################
     temp_list = []
 
@@ -150,14 +150,11 @@ if __name__ == '__main__':
 
 
     ##################################################
-    # TODO Running average of Features in Progress
+    # TODO Running average of # Features in Progress
     ##################################################
 
-
-
-    print str(int(epic_metrics['average'])) + ' days/feature.'
-
     pprint(processed_data)
+    print str(int(epic_metrics['average'])) + ' days/feature.'
 
 '''
     with open(processed_file, 'w') as outfile:
