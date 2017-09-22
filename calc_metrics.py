@@ -41,15 +41,15 @@ if __name__ == '__main__':
 
     #Average (days/item)
     metric_dict['epic_average'] = np.average(duration_list)
-    metric_dict['item_average'] = np.average(issue_list)
+    metric_dict['takt_average'] = np.average(issue_list)
 
     # Median
     metric_dict['epic_median'] = np.median(duration_list)
-    metric_dict['issue_median'] = np.median(issue_list)
+    metric_dict['takt_median'] = np.median(issue_list)
 
     # Std Deviation
     metric_dict['epic_stddev'] = np.std(duration_list)
-    metric_dict['issue_stddev'] = np.std(issue_list)
+    metric_dict['takt_stddev'] = np.std(issue_list)
 
     pprint(metric_dict)
 
