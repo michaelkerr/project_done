@@ -8,7 +8,9 @@ from sys import exit
 
 data_file = "data.json"
 processed_file = "processed.json"
-
+exclude_list = [
+    [0, 0, 0, 0]
+]
 
 def get_date(issue):
     #TODO
@@ -53,12 +55,8 @@ if __name__ == '__main__':
 
     for epic in epic_data:
         epic_dict = {
-            'start': '',
-            'done': '',
-            'issues': [],
-            'delivery': [],
-            'metrics': {}
-            }
+            'delivery': [] #list of datetime objects
+        }
 
         #TODO move to get_date()
         epic_start = datetime.strptime(str(epic['start'][0]), "%Y-%m-%d")
@@ -85,8 +83,7 @@ if __name__ == '__main__':
         ##################################################
         # Add the delivery dates of the issues, correct Epic start/end if req'd
         ##################################################
-        epic_dict['issues'] = epic['issues']
-        for issue in epic_dict['issues']:
+        for issue in epic['issues']:
             epic_dict['delivery'].append(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"))
 
             # If the delivery date is before the epic start, update epic_dict['start']
@@ -101,26 +98,13 @@ if __name__ == '__main__':
         epic_dict['delivery'] = sorted(epic_dict['delivery'], key=lambda x: x)
 
         ##################################################
-        # Get the Duration of the feature (EPIC)
+        # "Takt" delivery time
         ##################################################
-        epic_dict['metrics']['duration'] = get_duration(epic_dict['start'], epic_dict['done'])
-
-        # Add the data
-        if len(epic_dict['delivery']) > 0:
-            processed_data.append(epic_dict)
-
-    ##################################################
-    # "Takt" delivery time
-    # TODO Move this into the first loop since its per epic????
-    ##################################################
-    temp_list = []
-
-    for epic in processed_data:
         takt_list = []
-        start_date = epic['start']
+        start_date = epic_dict['start']
         last = 0
 
-        for done_date in sorted(epic['delivery'], key=lambda x: x):
+        for done_date in sorted(epic_dict['delivery'], key=lambda x: x):
             duration = get_duration(start_date, done_date)
             if duration == 0:
                 duration = last
@@ -128,57 +112,9 @@ if __name__ == '__main__':
             last = duration
             takt_list.append(duration)
 
-        epic['metrics']['takt'] = takt_list
-        temp_list.append(epic)
+        if len(takt_list) > 1 or takt_list in (exclude_list):
+            processed_data.append(takt_list)
+            pprint(takt_list)
 
-    processed_data = temp_list
-
-    ##################################################
-    # Epic Macro Metrics
-    ##################################################
-    epic_metrics = {}
-
-    #Average (days/feature)
-    #epic_metrics['average'] = average_duration(processed_data)
-    epic_metrics['epic_average'] = np.average(duration_list(processed_data))
-    #print str(int(epic_metrics['average'])) + ' days/feature.'
-
-    # Median
-    #epic_metrics['median'] = median_duration(processed_data)
-    epic_metrics['epic_median'] = np.median(duration_list(processed_data))
-
-    # Std Deviation
-    epic_metrics['epicstd_dev'] = np.std(duration_list(processed_data))
-
-
-    ##################################################
-    # TODO Rolling Average (days)
-    # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
-    ##################################################
-    #pprint(sort_done(processed_data))
-    #print moving_average(processed_data)
-
-
-    ##################################################
-    # TODO Running average of # Features in Progress
-    ##################################################
-
-
-
-    # Remove the issues.....
-    temp_list = []
-    for epic in processed_data:
-        epic.pop('issues')
-        temp_list.append(epic)
-
-    processed_data = temp_list
-    pprint(processed_data)
-
-    #pprint(processed_data)
-    pprint(epic_metrics)
-
-
-'''
     with open(processed_file, 'w') as outfile:
-        json.dump(epic_dict, outfile)
-'''
+        json.dump(processed_data, outfile)
