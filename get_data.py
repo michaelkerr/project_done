@@ -117,6 +117,7 @@ if __name__ == '__main__':
 
                 ##################################################
                 #FOR EACH ISSUE IN THE EPIC - GET THE DATES
+                #TODO 
                 ##################################################
                 issue_data = []
                 print "Parsing issues"
