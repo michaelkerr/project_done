@@ -15,7 +15,7 @@ if __name__ == '__main__':
         exit()
 
     takt_distro = {}
-    task_list = []
+    issue_list = []
     duration_list = []
 
     for epic in processed_data:
@@ -28,7 +28,7 @@ if __name__ == '__main__':
         # Update the distro of "takt" times
         ##################################################
         for entry in epic:
-            task_list.append(entry)
+            issue_list.append(entry)
             if entry in takt_distro.keys():
                 takt_distro[entry] = takt_distro[entry] + 1
             else:
@@ -41,15 +41,15 @@ if __name__ == '__main__':
 
     #Average (days/item)
     metric_dict['epic_average'] = np.average(duration_list)
-    metric_dict['item_average'] = np.average(task_list)
+    metric_dict['item_average'] = np.average(issue_list)
 
     # Median
     metric_dict['epic_median'] = np.median(duration_list)
-    metric_dict['task_median'] = np.median(task_list)
+    metric_dict['issue_median'] = np.median(issue_list)
 
     # Std Deviation
     metric_dict['epic_stddev'] = np.std(duration_list)
-    metric_dict['task_stddev'] = np.std(task_list)
+    metric_dict['issue_stddev'] = np.std(issue_list)
 
     pprint(metric_dict)
 
