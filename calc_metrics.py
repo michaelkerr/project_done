@@ -1,6 +1,9 @@
+from bokeh.charts import Bar, output_file, show
 import json
 import numpy as np
+import pandas as pd
 from pprint import pprint
+
 
 processed_file = "processed.json"
 
@@ -37,6 +40,39 @@ if __name__ == '__main__':
                 takt_distro[entry] = 1
 
     ##################################################
+    # Plot the histogram
+    ##################################################
+
+    #
+    bins = []
+    takt  = []
+    data = {}
+
+    current = 0
+    for key, value in takt_distro.iteritems():
+        while current <= key:
+            if current == int(key):
+                bins.append(key)
+                takt.append(value)
+            else:
+                bins.append(current)
+                takt.append(0)
+            current = current + 1
+    data = {
+        'days': bins,
+        'time': takt
+        }
+    pprint(data)
+
+    '''
+    df = pd.DataFrame(data)
+    hist = Bar(df, 'days', values='time', title="test chart")
+
+    output_file("project_done.html")
+    show(hist)
+    '''
+
+    ##################################################
     # Epic Macro Metrics
     ##################################################
     metric_dict = {}
@@ -54,9 +90,9 @@ if __name__ == '__main__':
     metric_dict['epic_stddev'] = np.std(duration_list)
     metric_dict['takt_stddev'] = np.std(issue_list)
 
-    pprint(metric_dict)
+    #pprint(metric_dict)
     #print issue_list
-    pprint(takt_distro)
+    #pprint(takt_distro)
     ##################################################
     # TODO Rolling Average (days)
     # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
@@ -68,3 +104,5 @@ if __name__ == '__main__':
     ##################################################
     # TODO Running average of # Features in Progress
     ##################################################
+
+    
