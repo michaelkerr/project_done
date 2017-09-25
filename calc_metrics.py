@@ -55,7 +55,8 @@ if __name__ == '__main__':
     metric_dict['takt_stddev'] = np.std(issue_list)
 
     pprint(metric_dict)
-
+    #print issue_list
+    pprint(takt_distro)
     ##################################################
     # TODO Rolling Average (days)
     # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
