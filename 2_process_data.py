@@ -6,8 +6,8 @@ import numpy as np
 from pprint import pprint
 from sys import exit
 
-data_file = "data.json"
-processed_file = "processed.json"
+in_file = "data.json"
+out_file = "processed.json"
 exclude_list = [
     [0, 0, 0, 0]
 ]
@@ -46,7 +46,7 @@ def sort_done(data):
 if __name__ == '__main__':
     #GET THE FEATURE DATA
     try:
-        with open(data_file, 'r') as infile:
+        with open(in_file, 'r') as infile:
             epic_data = json.load(infile)
     except Exception as e:
         print e
@@ -116,5 +116,5 @@ if __name__ == '__main__':
             processed_data.append(takt_list)
             pprint(takt_list)
 
-    with open(processed_file, 'w') as outfile:
+    with open(out_file, 'w') as outfile:
         json.dump(processed_data, outfile)

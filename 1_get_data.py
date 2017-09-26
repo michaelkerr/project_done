@@ -26,7 +26,7 @@ api_url = server + 'api/latest/'
 search_url = api_url + 'search?'
 
 headers = {'content-type': 'application/json;charset=UTF-8'}
-data_file = "data.json"
+out_file = "data.json"
 
 
 def search_issues(creds, url, data):
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     # LOAD EXISTING DATA FROM DATA.json
     ##################################################
     try:
-        with open(data_file, 'r') as infile:
+        with open(out_file, 'r') as infile:
             epic_data = json.load(infile)
     except Exception as e:
         epic_data = []
@@ -87,7 +87,6 @@ if __name__ == '__main__':
         ##################################################
 
         if (epic['key'] not in existing_epics):
-            #TODO handle updating of data
             print "Processing Epic: " + str(epic['key'])
 
             changelog = get_changelog(credentials, api_url, epic['key'])
@@ -117,7 +116,7 @@ if __name__ == '__main__':
 
                 ##################################################
                 #FOR EACH ISSUE IN THE EPIC - GET THE DATES
-                #TODO 
+                #TODO
                 ##################################################
                 issue_data = []
                 print "Parsing issues"
@@ -149,8 +148,6 @@ if __name__ == '__main__':
                 print "No start date.  Skipping"
 
     pprint(epic_data)
-    #TODO FEATURE START, FEATURE END, [ISSUE END DATES]
-    #TODO
 
-    with open(data_file, 'w') as outfile:
+    with open(out_file, 'w') as outfile:
         json.dump(epic_data, outfile)

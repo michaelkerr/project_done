@@ -1,4 +1,5 @@
-from bokeh.charts import Bar, output_file, show
+# -*- coding: utf-8 -*-
+#from bokeh.charts import Bar, output_file, show
 import json
 import numpy as np
 import pandas as pd
@@ -6,6 +7,8 @@ from pprint import pprint
 
 
 processed_file = "processed.json"
+data_file = "data_file.json"
+
 
 ### MAIN ###
 if __name__ == '__main__':
@@ -40,30 +43,46 @@ if __name__ == '__main__':
                 takt_distro[entry] = 1
 
     ##################################################
-    # Plot the histogram
+    # Prep the data for the probhability distribution
     ##################################################
-
+    #TODO MOVE TO PROCESS_DATA
     #
     bins = []
     takt  = []
     data = {}
 
     current = 0
+    total = 0
     for key, value in takt_distro.iteritems():
         while current <= key:
             if current == int(key):
                 bins.append(key)
                 takt.append(value)
+                total = total + value
             else:
                 bins.append(current)
                 takt.append(0)
             current = current + 1
+
     data = {
         'days': bins,
-        'time': takt
+        'time': takt,
+        'p(t)': []
         }
-    pprint(data)
 
+    # Create the probability Ditribution Manually
+    # TODO do this through Pandas, Numpy, SciPy later
+    for day in takt:
+        prob = float(day) / float(total)
+        data['p(t)'].append(prob)
+
+    # Write to file
+    with open(data_file, 'w') as outfile:
+        json.dump(data, outfile)
+
+    ##################################################
+    # Plot the histogram
+    ##################################################
     '''
     df = pd.DataFrame(data)
     hist = Bar(df, 'days', values='time', title="test chart")
@@ -90,9 +109,11 @@ if __name__ == '__main__':
     metric_dict['epic_stddev'] = np.std(duration_list)
     metric_dict['takt_stddev'] = np.std(issue_list)
 
-    #pprint(metric_dict)
+    pprint(metric_dict)
     #print issue_list
     #pprint(takt_distro)
+
+
     ##################################################
     # TODO Rolling Average (days)
     # NEED TO SORT PROCESSED_DATA BY DELIVERY DATE
@@ -104,5 +125,3 @@ if __name__ == '__main__':
     ##################################################
     # TODO Running average of # Features in Progress
     ##################################################
-
-    
