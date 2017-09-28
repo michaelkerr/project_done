@@ -6,15 +6,15 @@ import pandas as pd
 from pprint import pprint
 
 
-processed_file = "processed.json"
-data_file = "data_file.json"
+in_file = "processed.json"
+out_file = "data_file.json"
 
 
 ### MAIN ###
 if __name__ == '__main__':
     #GET THE FEATURE DATA
     try:
-        with open(processed_file, 'r') as infile:
+        with open(in_file, 'r') as infile:
             processed_data = json.load(infile)
     except Exception as e:
         print e
@@ -77,7 +77,7 @@ if __name__ == '__main__':
         data['p(t)'].append(prob)
 
     # Write to file
-    with open(data_file, 'w') as outfile:
+    with open(out_file, 'w') as outfile:
         json.dump(data, outfile)
 
     ##################################################

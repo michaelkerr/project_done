@@ -6,8 +6,9 @@ from pprint import pprint
 #from bokeh.charts import Bar, output_file, show
 import pandas as pd
 
-in_file = "in_file.json"
-trials = 10000
+#in_file = "processed.json"
+in_file = "data_file.json"
+trials = 50000
 num_items = 4
 averages = []
 probabilities = []
