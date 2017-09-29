@@ -8,6 +8,7 @@ import pandas as pd
 
 #in_file = "processed.json"
 in_file = "data_file.json"
+out_file = "generate.json"
 trials = 50000
 num_items = 4
 averages = []
@@ -45,7 +46,16 @@ if __name__ == '__main__':
     meta_dict['meta_std'] = np.std(averages)
     meta_dict['meta_85th'] = np.percentile(averages, 85)
     meta_dict['meta_95th'] = np.percentile(averages, 95)
-    #meta_mode['meta_mode'] =
+
+    i = 0
+    max = 0
+    for entry in data['p(t)']:
+        if entry > max:
+            max = i
+        i = i + 1
+
+    meta_dict['meta_mode'] = data['days'][max]
+
     pprint(meta_dict)
     print 'Average Story Takt Time: %s Days' % (meta_average)
     print 'Estimated Epic/Feature Delivery Time: %s Days' % (meta_average * num_items)
@@ -62,3 +72,7 @@ if __name__ == '__main__':
     # TODO Z Curve
     ##################################################
     #np.percentile(probabilities, 85)
+
+    # Write to file
+    with open(out_file, 'w') as outfile:
+        json.dump(data, outfile)
