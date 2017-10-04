@@ -74,7 +74,6 @@ if __name__ == '__main__':
     ##################################################
     # GET ALL THE COMPLETED EPICS IN THE PROJECT
     ##################################################
-    #TODO DONT KNOW WHY ISSUETYPE=EPIC IS FAILING
     print "Getting Epics....."
     epic_search_data = 'project = ID AND issuetype = Epic AND status = Done AND (Labels not in ("exclude") or labels is EMPTY)'
     epics = search_issues(credentials, search_url, epic_search_data)

@@ -9,6 +9,7 @@ import pandas as pd
 #in_file = "processed.json"
 in_file = "data_file.json"
 out_file = "generate.json"
+metric_file = "metric.json"
 trials = 50000
 num_items = 4
 averages = []
@@ -57,6 +58,10 @@ if __name__ == '__main__':
     meta_dict['meta_mode'] = data['days'][max]
 
     pprint(meta_dict)
+    # Write to file
+    with open(metric_file, 'w') as outfile:
+        json.dump(meta_dict, outfile)
+
     print 'Average Story Takt Time: %s Days' % (meta_average)
     print 'Estimated Epic/Feature Delivery Time: %s Days' % (meta_average * num_items)
 
