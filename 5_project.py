@@ -27,8 +27,13 @@ headers = {'content-type': 'application/json;charset=UTF-8'}
 
 in_file = "generate.json"
 metric_file = "metric.json"
-out_file = "project.json"
-csv_file = 'project.csv'
+today = datetime.now()
+out_file = '%s-%s-%s_project.json' % (today.year, today.month, today.day)
+csv_file = '%s-%s-%s_project.csv' % (today.year, today.month, today.day)
+
+print out_file
+print csv_file
+exit()
 
 
 def get_changelog(creds, url, issue_key):
@@ -112,16 +117,24 @@ if __name__ == '__main__':
 
     epic_forecasts = {}
 
-    # Get All Epics that arent Done and all issues in them
+    # Get All Epics that arent Done
     for status, value in statuses.iteritems():
         epic_search_data = 'project = ID AND issuetype = Epic AND status = "%s"' % status
         epics = search_issues(credentials, search_url, epic_search_data)
         print "Getting Epics in Status %s" % (status)
         if epics['total'] > 0:
             for epic in epics['issues']:
-                statuses[status]['epics'].append(epic['key'])
+                '''info = {
+                    'summary': '',
+                    'status': '',
+                    'release': ''
+                    }
+                    '''
+                pass
+                #statuses[status]['epics'].append({epic['key']: })
 
-    # TODO Calculate the expected duration of the epic
+    exit()
+    # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():
         for epic in value['epics']:
             print "Calculating for %s" % (epic)
