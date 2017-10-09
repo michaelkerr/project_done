@@ -121,29 +121,6 @@ if __name__ == '__main__':
             }
     }
 
-    statuses_1 = {
-        'Backlog': {
-                'type': 'To Do',
-                'epics': []
-            },
-        'Not Started': {
-                'type': 'To Do',
-                'epics': []
-            },
-        'In Progress': {
-                'type': 'In Progress',
-                'epics': []
-            },
-        'At Risk': {
-                'type': 'In Progress',
-                'epics': []
-            },
-        'Late-Blocked': {
-                'type': 'In Progress',
-                'epics': []
-            }
-    }
-
     status_map = {
         'Backlog': 'To Do',
         'Selected for Development': 'To Do',
@@ -163,14 +140,14 @@ if __name__ == '__main__':
         print "Getting Epics in Status %s" % (status)
         if epics['total'] > 0:
             for epic in epics['issues']:
-                '''info = {
+                pprint(epic['fields'])
+                exit()
+                info = {
                     'summary': '',
-                    'status': '',
+                    'status': epic['fields']['status'],
                     'release': ''
                     }
-                    '''
                 statuses[status]['epics'].append(epic['key'])
-                statuses_1[status]['epics'].append(epic['key'])
 
     # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():
