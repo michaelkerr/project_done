@@ -26,7 +26,7 @@ api_url = server + 'api/latest/'
 search_url = api_url + 'search?'
 
 headers = {'content-type': 'application/json;charset=UTF-8'}
-out_file = "data.json"
+out_file = "data_1.json"
 
 
 def search_issues(creds, url, data):

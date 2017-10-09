@@ -6,8 +6,8 @@ import numpy as np
 from pprint import pprint
 from sys import exit
 
-in_file = "data.json"
-out_file = "processed.json"
+in_file = "data_1.json"
+out_file = "data_2.json"
 exclude_list = [
     [0, 0, 0, 0]
 ]

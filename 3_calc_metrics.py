@@ -6,8 +6,8 @@ import pandas as pd
 from pprint import pprint
 
 
-in_file = "processed.json"
-out_file = "data_file.json"
+in_file = "data_2.json"
+out_file = "data_3.json"
 
 
 ### MAIN ###

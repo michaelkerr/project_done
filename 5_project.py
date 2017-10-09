@@ -25,15 +25,12 @@ search_url = api_url + 'search?'
 
 headers = {'content-type': 'application/json;charset=UTF-8'}
 
-in_file = "generate.json"
-metric_file = "metric.json"
+in_file = "data_4.json"
+metric_file = "data_metrics.json"
+history = "database.json"
 today = datetime.now()
 out_file = '%s-%s-%s_project.json' % (today.year, today.month, today.day)
 csv_file = '%s-%s-%s_project.csv' % (today.year, today.month, today.day)
-
-print out_file
-print csv_file
-exit()
 
 
 def get_changelog(creds, url, issue_key):
@@ -62,7 +59,9 @@ def search_issues(creds, url, data):
 
 ### MAIN ###
 if __name__ == '__main__':
-    # Get the generate metrics
+    ##################################################
+    # Get the generated metrics
+    ##################################################
     try:
         with open(in_file, 'r') as infile:
             data = json.load(infile)
@@ -70,7 +69,9 @@ if __name__ == '__main__':
         print e
         exit()
 
-    # Get the generate metrics
+    ##################################################
+    # Get the calculated metrics
+    ##################################################
     try:
         with open(metric_file, 'r') as infile:
             metrics = json.load(infile)
@@ -78,11 +79,49 @@ if __name__ == '__main__':
         print e
         exit()
 
+
+    ##################################################
+    # LOAD EXISTING DATA FROM THE "DATABASE"
+    ##################################################
+    try:
+        with open(history, 'r') as infile:
+            historic_data = json.load(infile)
+    except Exception as e:
+        historic_data = []
+
+    existing_epics = []
+    for issue in historic_data:
+        existing_epics.append(issue['key'])
+
+
     # TODO Adapt for the z Curve
 
     # TODO Get the Statuses for the project
     # TODO TEMP = HARDCODED
     statuses = {
+        'Backlog': {
+                'type': 'To Do',
+                'epics': []
+            },
+        'Not Started': {
+                'type': 'To Do',
+                'epics': []
+            },
+        'In Progress': {
+                'type': 'In Progress',
+                'epics': []
+            },
+        'At Risk': {
+                'type': 'In Progress',
+                'epics': []
+            },
+        'Late-Blocked': {
+                'type': 'In Progress',
+                'epics': []
+            }
+    }
+
+    statuses_1 = {
         'Backlog': {
                 'type': 'To Do',
                 'epics': []
@@ -130,10 +169,9 @@ if __name__ == '__main__':
                     'release': ''
                     }
                     '''
-                pass
-                #statuses[status]['epics'].append({epic['key']: })
+                statuses[status]['epics'].append(epic['key'])
+                statuses_1[status]['epics'].append(epic['key'])
 
-    exit()
     # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():
         for epic in value['epics']:
@@ -189,8 +227,7 @@ if __name__ == '__main__':
         json.dump(epic_forecasts, outfile)
 
 
-    # Write to csv
-    my_dict = {"test": 1, "testing": 2}
+    # Write to csv`
 
     with open(csv_file, 'wb') as f:
         w = csv.DictWriter(f, epic_forecasts.keys())

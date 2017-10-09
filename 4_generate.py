@@ -7,9 +7,9 @@ from pprint import pprint
 import pandas as pd
 
 #in_file = "processed.json"
-in_file = "data_file.json"
-out_file = "generate.json"
-metric_file = "metric.json"
+in_file = "data_3.json"
+out_file = "data_4.json"
+metric_file = "data_metrics.json"
 trials = 50000
 num_items = 4
 averages = []
