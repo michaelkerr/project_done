@@ -140,13 +140,14 @@ if __name__ == '__main__':
         print "Getting Epics in Status %s" % (status)
         if epics['total'] > 0:
             for epic in epics['issues']:
-                pprint(epic['fields'])
-                exit()
+
                 info = {
-                    'summary': '',
-                    'status': epic['fields']['status'],
-                    'release': ''
+                    'summary': epic['fields']['summary'],
+                    'status': epic['fields']['status']['name'],
+                    'release': epic['fields']['fixVersions'][0]['name'],
+                    'target date': epic['fields']['customfield_11503']
                     }
+
                 statuses[status]['epics'].append(epic['key'])
 
     # Calculate the expected duration of the epic
