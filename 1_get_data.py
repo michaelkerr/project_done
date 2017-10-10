@@ -2,6 +2,7 @@
 
 import json
 import csv
+from datetime import datetime
 from os import path
 from pprint import pprint
 import requests

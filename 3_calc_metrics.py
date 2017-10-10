@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #from bokeh.charts import Bar, output_file, show
+from datetime import datetime
 import json
 import numpy as np
 import pandas as pd
 from pprint import pprint
-
 
 in_file = "data_2.json"
 out_file = "data_3.json"

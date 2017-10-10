@@ -25,6 +25,9 @@ search_url = api_url + 'search?'
 
 headers = {'content-type': 'application/json;charset=UTF-8'}
 
+#TODO get this from command line or comnfig file
+project = 'ID'
+
 in_file = "data_4.json"
 metric_file = "data_metrics.json"
 history = "database.json"
@@ -131,30 +134,31 @@ if __name__ == '__main__':
         'Done': 'Done'
     }
 
-    epic_forecasts = {}
+    epic_forecasts = []
 
     # Get All Epics that arent Done
     for status, value in statuses.iteritems():
-        epic_search_data = 'project = ID AND issuetype = Epic AND status = "%s"' % status
+        epic_search_data = 'project = %s AND issuetype = Epic AND status = "%s"' % (project, status)
         epics = search_issues(credentials, search_url, epic_search_data)
-        print "Getting Epics in Status %s" % (status)
+        print "Getting %s Epics" % (status)
         if epics['total'] > 0:
             for epic in epics['issues']:
 
-                info = {
+                epic_info = {'key': epic['key'],
                     'summary': epic['fields']['summary'],
                     'status': epic['fields']['status']['name'],
                     'release': epic['fields']['fixVersions'][0]['name'],
                     'target date': epic['fields']['customfield_11503']
                     }
 
-                statuses[status]['epics'].append(epic['key'])
+                #statuses[status]['epics'] = info
+                statuses[status]['epics'].append(epic_info)
 
     # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():
         for epic in value['epics']:
-            print "Calculating for %s" % (epic)
-            issue_search_data = 'issuetype not in (Bug, "Design Task") AND "Epic Link" = "%s"' % epic
+            print "Calculating for %s" % (epic['key'])
+            issue_search_data = 'issuetype not in (Bug, "Design Task") AND "Epic Link" = "%s"' % epic['key']
             issues = search_issues(credentials, search_url, issue_search_data)
 
             epic_issues = []
@@ -196,9 +200,13 @@ if __name__ == '__main__':
                 epic_issues.append(remaining)
                 #print str(round(sum(epic_issues), 0)) + " days."
 
-            epic_forecasts[epic] = round(sum(epic_issues), 0)
+            epic['estimate'] = round(sum(epic_issues), 0)
+            epic_forecasts.append(epic)
 
-    pprint(epic_forecasts)
+            #epic_forecasts[epic] = round(sum(epic_issues), 0)
+
+    for epic in epic_forecasts:
+        print '%s, %s' % (epic['key'], epic['estimate'])
 
     # Write to json
     with open(out_file, 'w') as outfile:
@@ -206,8 +214,14 @@ if __name__ == '__main__':
 
 
     # Write to csv`
-
     with open(csv_file, 'wb') as f:
-        w = csv.DictWriter(f, epic_forecasts.keys())
-        w.writeheader()
-        w.writerow(epic_forecasts)
+        fieldnames = epic_forecasts[0].keys()
+        csvwriter = csv.DictWriter(f, fieldnames=fieldnames)
+        csvwriter.writeheader()
+
+        for row in epic_forecasts:
+            csvwriter.writerow(row)
+
+        #csvwriter = csv.DictWriter(f, epic_forecasts.keys())
+        #csvwriter.writeheader()
+        #csvwriter.writerow(epic_forecasts)

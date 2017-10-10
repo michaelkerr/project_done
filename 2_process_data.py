@@ -6,6 +6,8 @@ import numpy as np
 from pprint import pprint
 from sys import exit
 
+today = datetime.now()
+
 in_file = "data_1.json"
 out_file = "data_2.json"
 exclude_list = [
