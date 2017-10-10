@@ -207,11 +207,12 @@ if __name__ == '__main__':
 
     for epic in epic_forecasts:
         print '%s, %s' % (epic['key'], epic['estimate'])
+        #TODO Calculate the dates
+
 
     # Write to json
     with open(out_file, 'w') as outfile:
         json.dump(epic_forecasts, outfile)
-
 
     # Write to csv`
     with open(csv_file, 'wb') as f:
