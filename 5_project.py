@@ -226,3 +226,41 @@ if __name__ == '__main__':
         #csvwriter = csv.DictWriter(f, epic_forecasts.keys())
         #csvwriter.writeheader()
         #csvwriter.writerow(epic_forecasts)
+"""
+Input format:
+{
+	"p(t)": [0.12396694214876033, 0.256198347107438, 0.1115702479338843, ...0.008264462809917356],
+	"days": [0, 1, 2, ...131],
+	"time": [30, 62, 27, ...2]
+}
+
+Output Format 1:
+[{
+	"status": "In Progress",
+	"target date": "2017-10-15",
+	"summary": "Device Linking",
+	"key": "ID-2295",
+	"release": "S2 Platform",
+	"estimate": 9.0
+}, {
+	"status": "In Progress",
+	"target date": "2017-11-05",
+	"summary": "Profile Redesign (Reveal)",
+	"key": "ID-2080",
+	"release": "December Reveal",
+	"estimate": 37.0
+},
+...
+...
+...
+]
+
+Output Format 2:
+status,target date,summary,key,release,estimate
+In Progress,2017-10-15,Device Linking,ID-2295,S2 Platform,9.0
+In Progress,2017-11-05,Profile Redesign (Reveal),ID-2080,December Reveal,37.0
+...
+...
+...
+
+"""

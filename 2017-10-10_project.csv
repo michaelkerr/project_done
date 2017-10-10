@@ -1,0 +1,57 @@
+status,target date,summary,key,release,estimate
+In Progress,2017-10-15,Device Linking,ID-2295,S2 Platform,9.0
+In Progress,2017-11-05,Profile Redesign (Reveal),ID-2080,December Reveal,37.0
+In Progress,2017-11-05,Auth Flow Redesign (Reveal),ID-2079,December Reveal,46.0
+In Progress,2017-10-15,Device EULA Acceptance,ID-1791,S2 Platform,2.0
+In Progress,2017-10-15,Unique Client IDs,ID-687,S2 Platform,2.0
+In Progress,2017-10-15,Agree to New Terms,ID-644,Dev Portal October,52.0
+Not Started,2017-11-05,Reservation Conversion (No Birthdate),ID-2220,December Reveal,0.0
+Not Started,2017-11-19,Reservation Management,ID-2219,December Reveal,0.0
+Not Started,,Send and Validate Access Tokens,ID-2165,Reveal +1,32.0
+Not Started,,Change Primary Email,ID-2124,Launch Ready,0.0
+Not Started,2017-11-12,Notification Preferences,ID-1967,December Reveal,7.0
+Not Started,,Account Recovery - Email,ID-1918,Launch Ready,22.0
+Not Started,,MFA,ID-1916,Launch Ready,22.0
+Not Started,,Identity Landing Page,ID-1911,Launch Ready,22.0
+Not Started,,Web Device Management (Mobile),ID-1902,Launch Ready,22.0
+Not Started,,Device Management (Web),ID-1901,Reveal +1,22.0
+Not Started,,Manage Billing Information,ID-1595,Launch Ready,22.0
+Not Started,,User Lookup,ID-1011,S2 Apps,22.0
+Not Started,2017-12-04,Delete Account 2.0,ID-462,December Reveal,15.0
+Not Started,,Basic Scopes,ID-378,Reveal +1,15.0
+Not Started,,Device Management (Sensoryware),ID-302,Launch Ready,37.0
+Not Started,,User Nickname,ID-296,S2 Apps,54.0
+Backlog,,Analytics RBAC Management,ID-2313,Launch Ready,0.0
+Backlog,,Reveal Analytics Improvements,ID-2299,December Reveal,0.0
+Backlog,,Reveal Audit Trail Improvements,ID-2298,December Reveal,0.0
+Backlog,2017-11-19,Whitelist Modification,ID-2297,December Reveal,7.0
+Backlog,2017-10-29,Admin RBAC,ID-2296,December Reveal,7.0
+Backlog,,Developer RBAC 2.0,ID-2268,Reveal +1,7.0
+Backlog,,Backend Tech Debt Paydown Dec,ID-2266,December Reveal,15.0
+Backlog,,Biometric Device Unlock,ID-2265,Launch Ready,7.0
+Backlog,,Manage Addresses 2.0,ID-2229,Launch Ready,0.0
+Backlog,,Recover Account (Email),ID-2221,Launch Ready,0.0
+Backlog,2017-10-29,Developer RBAC Support (Groups/Roles) MVP,ID-2210,Dev Portal October,30.0
+Backlog,2017-12-04,Account Support Tools,ID-1966,December Reveal,15.0
+Backlog,,Anytime Challenge,ID-1947,Launch Ready,0.0
+Backlog,,User Bio,ID-1946,S2 Apps,15.0
+Backlog,,Email Account Confirm Link,ID-1943,Launch Ready,0.0
+Backlog,,Passwordless 2.0,ID-1921,Launch Ready,22.0
+Backlog,,Identity Multi Region,ID-1920,Reveal +1,0.0
+Backlog,,Notifications,ID-1919,Launch Ready,7.0
+Backlog,,Account Recovery with Code,ID-1917,Launch Ready,7.0
+Backlog,,Account Recovery - Facebook,ID-1915,Launch Ready,15.0
+Backlog,,Account Lock/Unlock,ID-1914,Launch Ready,7.0
+Backlog,,Device Management (ML Admin),ID-1903,Launch Ready,22.0
+Backlog,,Restore User Data,ID-1889,Launch Ready,15.0
+Backlog,,Easy Login (Old QR Code),ID-1887,Launch Ready,0.0
+Backlog,,Data Preservation for Legal Holds,ID-1858,Launch Ready,0.0
+Backlog,,Non-Redirect Auth Flow,ID-1722,Launch Ready,7.0
+Backlog,,App Services Exchange Token,ID-1630,Launch Ready,0.0
+Backlog,,Remote Sign Out,ID-1613,Reveal +1,22.0
+Backlog,,Server Side Sessions,ID-1612,Reveal +1,22.0
+Backlog,,General Content Management,ID-1585,Launch Ready,30.0
+Backlog,,Backup and Restore Client Data,ID-1100,Launch Ready,15.0
+Backlog,,View Groups in ID Portal,ID-959,Launch Ready,0.0
+Backlog,,Backup User Data,ID-887,Launch Ready,15.0
+Backlog,,Account Linking,ID-304,S2 Apps,22.0

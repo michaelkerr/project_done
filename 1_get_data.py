@@ -151,3 +151,18 @@ if __name__ == '__main__':
 
     with open(out_file, 'w') as outfile:
         json.dump(epic_data, outfile)
+
+'''
+Output format:
+{
+	"start": ["YYYY-MM-DD"],
+	"done": ["YYYY-MM-DD"],
+	"issues": [
+	  {
+		"start": ["YYYY-MM-DD"], 
+		"done": ["YYYY-MM-DD"],
+		"key": "<PROJECT>-<###...#>"}
+	],
+	"key": "<PROJECT>-<###...#>"
+  }
+ '''
