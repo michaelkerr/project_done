@@ -144,15 +144,23 @@ if __name__ == '__main__':
         if epics['total'] > 0:
             for epic in epics['issues']:
 
+<<<<<<< HEAD
+                info = {
+=======
                 epic_info = {'key': epic['key'],
+>>>>>>> refactor
                     'summary': epic['fields']['summary'],
                     'status': epic['fields']['status']['name'],
                     'release': epic['fields']['fixVersions'][0]['name'],
                     'target date': epic['fields']['customfield_11503']
                     }
 
+<<<<<<< HEAD
+                statuses[status]['epics'].append(epic['key'])
+=======
                 #statuses[status]['epics'] = info
                 statuses[status]['epics'].append(epic_info)
+>>>>>>> refactor
 
     # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():

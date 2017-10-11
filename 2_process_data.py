@@ -6,6 +6,8 @@ import numpy as np
 from pprint import pprint
 from sys import exit
 
+today = datetime.now()
+
 in_file = "data_1.json"
 out_file = "data_2.json"
 exclude_list = [
@@ -118,3 +120,25 @@ if __name__ == '__main__':
 
     with open(out_file, 'w') as outfile:
         json.dump(processed_data, outfile)
+
+
+'''
+Input format:
+{
+	"start": ["YYYY-MM-DD"],
+	"done": ["YYYY-MM-DD"],
+	"issues": [
+	  {
+		"start": ["YYYY-MM-DD"],
+		"done": ["YYYY-MM-DD"],
+		"key": "<PROJECT>-<###...#>"}
+	],
+	"key": "<PROJECT>-<###...#>"
+ }
+
+ Output format:
+[
+	[6, 3, 3, 3, 3, 7, 1, 1, 1, 1, 1, 1, 36],
+	[0, 1, 1, 2, 2, 2, 2, 2, 4, 7, 7, 1]
+]
+ '''

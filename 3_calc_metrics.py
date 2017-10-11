@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 #from bokeh.charts import Bar, output_file, show
+from datetime import datetime
 import json
 import numpy as np
 import pandas as pd
 from pprint import pprint
-
 
 in_file = "data_2.json"
 out_file = "data_3.json"
@@ -125,3 +125,18 @@ if __name__ == '__main__':
     ##################################################
     # TODO Running average of # Features in Progress
     ##################################################
+
+'''
+Input format:
+[
+	[6, 3, 3, 3, 3, 7, 1, 1, 1, 1, 1, 1, 36],
+	[0, 1, 1, 2, 2, 2, 2, 2, 4, 7, 7, 1]
+]
+
+Output format:
+{
+	"p(t)": [0.12396694214876033, 0.256198347107438, 0.1115702479338843, ...0.008264462809917356],
+	"days": [0, 1, 2, ...131],
+	"time": [30, 62, 27, ...2]
+}
+ '''
