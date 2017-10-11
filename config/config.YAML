@@ -1,3 +1,4 @@
 server: 'https://<DOMAIN>.<SUF>'
 username: "USERNAME"
 password: "PASSWORD"
+smartsheet: "API KEY"

@@ -21,6 +21,12 @@ def get_cell_by_column_name(row, column_ame):
 
 
 def evaluate_row_and_build_updates(source_row):
+    # TODO Update Estimate
+    # TODO Update Target date
+    # TODO IF JIRA STATUS "In Progress" set "Start Date" to =today()
+
+
+
     # Find the cell and value we want to evaluate
     status_cell = get_cell_by_column_name(source_row, "Status")
     status_value = status_cell.display_value
@@ -46,7 +52,6 @@ def evaluate_row_and_build_updates(source_row):
 
 if __name__ == '__main__':
     column_map = {}
-
 
     # Initialize client
     ss = smartsheet.Smartsheet(access_token)
