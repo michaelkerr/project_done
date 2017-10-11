@@ -82,3 +82,18 @@ if __name__ == '__main__':
     # Write to file
     with open(out_file, 'w') as outfile:
         json.dump(data, outfile)
+
+
+
+'''
+Input format:
+{
+	"p(t)": [0.12396694214876033, 0.256198347107438, 0.1115702479338843, ...0.008264462809917356],
+	"days": [0, 1, 2, ...131],
+	"time": [30, 62, 27, ...2]
+}
+
+Output Format:
+S/A For now......
+
+'''
