@@ -86,16 +86,18 @@ if __name__ == '__main__':
         # Add the delivery dates of the issues, correct Epic start/end if req'd
         ##################################################
         for issue in epic['issues']:
-            epic_dict['delivery'].append(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"))
+            if len(issue['done']) > 0:
+                epic_dict['delivery'].append(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"))
 
-            # If the delivery date is before the epic start, update epic_dict['start']
-            if get_duration(epic_dict['start'], datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")) < 0:
-                epic_dict['start'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
+                # If the delivery date is before the epic start, update epic_dict['start']
+                if get_duration(epic_dict['start'], datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")) < 0:
+                    epic_dict['start'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
 
-            # If the delivery date is after the epic end, update epic_dict['done']
-            if get_duration(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"), epic_dict['done']) < 0:
-                epic_dict['done'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
-
+                # If the delivery date is after the epic end, update epic_dict['done']
+                if get_duration(datetime.strptime(str(issue['done'][0]), "%Y-%m-%d"), epic_dict['done']) < 0:
+                    epic_dict['done'] = datetime.strptime(str(issue['done'][0]), "%Y-%m-%d")
+            else:
+                print issue['done'], epic_done
         # Sort the delivery list in order of completion
         epic_dict['delivery'] = sorted(epic_dict['delivery'], key=lambda x: x)
 

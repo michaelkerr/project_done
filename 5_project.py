@@ -121,6 +121,10 @@ if __name__ == '__main__':
         'Late-Blocked': {
                 'type': 'In Progress',
                 'epics': []
+            },
+        'Blocked': {
+                'type': 'In Progress',
+                'epics': []
             }
     }
 
@@ -157,7 +161,6 @@ if __name__ == '__main__':
     # Calculate the expected duration of the epic
     for status, value in statuses.iteritems():
         for epic in value['epics']:
-            print "Calculating for %s" % (epic['key'])
             issue_search_data = 'issuetype not in (Bug, "Design Task") AND "Epic Link" = "%s"' % epic['key']
             issues = search_issues(credentials, search_url, issue_search_data)
 
@@ -165,6 +168,11 @@ if __name__ == '__main__':
 
             for issue in issues['issues']:
                 issue_status = status_map[issue['fields']['status']['name']]
+                print '.',
+                #pprint(issue.keys())
+                #pprint(issue['target date'] + 2)
+                #exit()
+
                 if issue_status != 'Done':
                     if issue_status == 'To Do':
                         # Use the Average
@@ -181,7 +189,7 @@ if __name__ == '__main__':
                         now = datetime.now()
                         diff = metrics['meta_average'] - float((now - issue_start).days)
 
-                        # If the elapsed work time > average, use 2x the mdoe
+                        # If the elapsed work time > average, use 2x the mode
                         if diff < 0:
                             remaining = 2 * metrics['meta_mode']
 
@@ -209,6 +217,7 @@ if __name__ == '__main__':
         print '%s, %s' % (epic['key'], epic['estimate'])
         #TODO Calculate the dates
 
+    print today
 
     # Write to json
     with open(out_file, 'w') as outfile:
